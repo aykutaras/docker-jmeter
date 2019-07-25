@@ -16,7 +16,7 @@ echo "JVM_ARGS=${JVM_ARGS}"
 echo "jmeter args=$@"
 
 # Keep entrypoint simple: we must pass the standard JMeter arguments
-jmeter $@
+jmeter -n -t /src/$@ -l /target/result.jtl -j /target/jmeter.log -e -o /target/dashboard/
 echo "END Running Jmeter on `date`"
 
 #     -n \

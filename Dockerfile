@@ -13,7 +13,7 @@ ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-
 # See https://github.com/gliderlabs/docker-alpine/issues/136#issuecomment-272703023
 # Change TimeZone TODO: TZ still is not set!
 ARG TZ="Europe/Amsterdam"
-RUN    apk update \
+RUN apk update \
 	&& apk upgrade \
 	&& apk add ca-certificates \
 	&& update-ca-certificates \
@@ -32,9 +32,14 @@ RUN    apk update \
 # Set global PATH such that "jmeter" command is found
 ENV PATH $PATH:$JMETER_BIN
 
+# Add my preferred extensions
+COPY lib/ $JMETER_HOME/lib/
+
 # Entrypoint has same signature as "jmeter" command
 COPY entrypoint.sh /
 
-WORKDIR	${JMETER_HOME}
+RUN mkdir /src /target
+WORKDIR	/src
+VOLUME /target
 
 ENTRYPOINT ["/entrypoint.sh"]
